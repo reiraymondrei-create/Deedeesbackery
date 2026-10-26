@@ -1,1261 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DEEDEE'S BAKERY Prototype</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts: Cormorant Garamond, Playfair Display & Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Alex+Brush&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>DEEDEE'S BAKERY | Artisan Cakes & Handcrafted Ice Cream</title>
 
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            figmaDark: '#1E1E1E',
-            figmaCard: '#2C2C2C',
-            brandPink: '#F4C2BE',
-            brandPinkSoft: '#F8D8D5',
-            brandBurgundy: '#461B22',
-            brandBurgundyDark: '#321016',
-            brandBurgundyLight: '#682A34',
-            brandOlive: '#5C6251',
-            brandOliveDark: '#4A5040',
-            brandTerracotta: '#BF6F69',
-            brandTerracottaDark: '#A65A54',
-            brandCream: '#FAF6F0'
+            'blush-pink': '#F8D1CC',
+            'blush-card': '#F2BFB9',
+            'wine-dark': '#3C161E',
+            'wine-deep': '#280D13',
+            'olive-green': '#5F6553',
+            'olive-dark': '#484D3E',
+            'olive-card': '#515646'
           },
           fontFamily: {
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
-            cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            script: ['"Alex Brush"', 'cursive'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
           }
         }
       }
     }
   </script>
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
-    /* Figma dot grid background */
-    .figma-canvas-grid {
-      background-color: #1e1e1e;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-      background-size: 20px 20px;
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
-
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.1);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(70, 27, 34, 0.25);
-      border-radius: 9999px;
-    }
-
-    /* Double-line Capsule Button from Figma Prototype */
-    .figma-order-pill {
-      background-color: #461B22;
-      color: #FAF6F0;
-      border: 1.5px solid #FAF6F0;
-      outline: 1.5px solid #461B22;
-      outline-offset: 2px;
-      box-shadow: 0 4px 12px rgba(70, 27, 34, 0.35);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .figma-order-pill:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 16px rgba(70, 27, 34, 0.5);
-    }
-    .figma-order-pill:active {
-      transform: scale(0.98);
-    }
-
-    /* Double outlined button for components canvas showcase */
-    .figma-pill-outline {
-      border: 1.5px solid #FAF6F0;
-      outline: 1.5px solid #BF6F69;
-      outline-offset: 3px;
-    }
-
-    /* Image circular crop shadow matching Figma */
-    .artboard-circle-shadow {
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-    }
-
-    .proto-transition {
-      transition: opacity 0.22s ease-in-out, transform 0.22s ease-in-out;
-    }
-    .proto-hidden {
-      display: none !important;
-      opacity: 0;
-      transform: translateY(6px);
-    }
-    .proto-active {
-      display: block !important;
-      opacity: 1;
-      transform: translateY(0);
+    .font-serif-vintage {
+      font-family: 'Playfair Display', Georgia, serif;
     }
   </style>
 </head>
+<body class="bg-blush-pink text-wine-dark antialiased transition-colors duration-500 min-h-screen flex flex-col">
 
-<body class="bg-[#121212] text-neutral-100 font-sans min-h-screen flex flex-col select-none overflow-x-hidden">
-
-  <!-- Top Global Navigation / Figma Workspace Toolbar -->
-  <header class="bg-[#1e1e1e] border-b border-neutral-700/80 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 z-50 sticky top-0 shadow-md">
-    
-    <!-- Left: Figma File Title & Status -->
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-pink-500 via-rose-600 to-amber-600 flex items-center justify-center text-white font-bold text-xs shadow-inner">
-        <i class="fa-brands fa-figma"></i>
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="text-sm font-semibold tracking-wide text-neutral-100">DEEDEE'S BAKERY (Figma Replica)</h1>
-          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-brandBurgundy text-brandPinkSoft border border-brandBurgundyLight">Dev Mode</span>
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="sticky top-0 z-50 bg-[#F8D1CC]/95 backdrop-blur-md border-b border-wine-dark/10 transition-colors duration-500" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center space-x-3 group">
+        <span class="text-3xl transform group-hover:scale-110 transition-transform">🧁</span>
+        <div class="leading-tight">
+          <span class="block text-xl font-extrabold tracking-widest font-serif-vintage text-wine-dark uppercase" id="nav-brand-title">DeeDee's</span>
+          <span class="block text-[10px] font-bold tracking-[0.25em] text-wine-dark/70 uppercase" id="nav-brand-sub">Bakery & Ice Cream</span>
         </div>
-        <p class="text-[11px] text-neutral-400">misZLE37VIgekRtEtUZE3L / bakery • Node 0:1</p>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide">
+        <a href="#hero" class="hover:opacity-75 transition-opacity">Home</a>
+        <a href="#menu" class="hover:opacity-75 transition-opacity">Menu</a>
+        <a href="#locations" class="hover:opacity-75 transition-opacity">Locations</a>
+        <a href="#about" class="hover:opacity-75 transition-opacity">About Story</a>
+        <a href="#contact" class="hover:opacity-75 transition-opacity">Contact</a>
+      </nav>
+
+      <!-- Cart Button & Mobile Menu Trigger -->
+      <div class="flex items-center space-x-4">
+        <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-full bg-wine-dark/10 hover:bg-wine-dark/20 transition-colors" title="View Cart">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-wine-dark" id="nav-cart-icon"></i>
+          <span id="cart-counter" class="hidden absolute -top-1 -right-1 bg-wine-dark text-blush-pink text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">0</span>
+        </button>
+
+        <a href="#menu" class="hidden sm:inline-flex items-center px-6 py-2.5 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all shadow-md">
+          Order Online
+        </a>
+
+        <!-- Mobile hamburger -->
+        <button onclick="toggleMobileNav()" class="md:hidden p-2 rounded-lg hover:bg-black/10">
+          <i data-lucide="menu" class="w-6 h-6 text-wine-dark" id="mobile-menu-icon"></i>
+        </button>
       </div>
     </div>
 
-    <!-- Center: View Mode Switcher -->
-    <div class="flex items-center bg-[#2A2A2A] p-1 rounded-xl border border-neutral-700">
-      <button id="view-btn-canvas" onclick="setViewMode('canvas')" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#3B3B3B] shadow transition">
-        <i class="fa-solid fa-layer-group text-xs text-brandPink"></i>
-        <span>Figma Artboard Canvas</span>
-      </button>
-      <button id="view-btn-simulator" onclick="setViewMode('simulator')" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white transition">
-        <i class="fa-solid fa-mobile-screen text-xs"></i>
-        <span>Live Interactive Prototype</span>
-      </button>
-    </div>
-
-    <!-- Right: Quick Screen Jump Controls -->
-    <div class="flex items-center gap-2 text-xs">
-      <span class="text-neutral-400 text-[11px] mr-1 hidden sm:inline">Jump to:</span>
-      <button onclick="jumpPrototype('home')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">Home</button>
-      <button onclick="jumpPrototype('menu', 'cake')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">Cake</button>
-      <button onclick="jumpPrototype('menu', 'icecream')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">Ice Cream</button>
-      <button onclick="jumpPrototype('contact')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">Contact</button>
-      <button onclick="jumpPrototype('about')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">About</button>
-      <button onclick="jumpPrototype('locations')" class="px-2.5 py-1 rounded bg-[#2D2D2D] hover:bg-[#3D3D3D] text-neutral-300 text-[11px] transition">Locations</button>
+    <!-- Mobile Navigation Dropdown -->
+    <div id="mobile-nav" class="hidden md:hidden px-6 py-4 bg-white/40 backdrop-blur-lg border-t border-black/5 space-y-3">
+      <a href="#hero" onclick="toggleMobileNav()" class="block py-2 font-medium">Home</a>
+      <a href="#menu" onclick="toggleMobileNav()" class="block py-2 font-medium">Menu (Cakes & Ice Cream)</a>
+      <a href="#locations" onclick="toggleMobileNav()" class="block py-2 font-medium">Locations</a>
+      <a href="#about" onclick="toggleMobileNav()" class="block py-2 font-medium">Our Story</a>
+      <a href="#contact" onclick="toggleMobileNav()" class="block py-2 font-medium">Contact Us</a>
     </div>
   </header>
 
-  <!-- ========================================================================= -->
-  <!-- VIEW 1: FIGMA MULTI-FRAME CANVAS (ALL 7 ARTBOARDS SIDE-BY-SIDE AS IN PNG) -->
-  <!-- ========================================================================= -->
-  <section id="figma-canvas-view" class="flex-1 figma-canvas-grid p-6 lg:p-10 overflow-x-auto min-h-[calc(100vh-56px)]">
-    
-    <!-- Canvas scale / zoom info notice -->
-    <div class="mb-6 flex items-center justify-between max-w-[2450px]">
-      <div class="flex items-center gap-3">
-        <span class="text-xs uppercase font-mono tracking-wider px-2.5 py-1 rounded bg-neutral-800 text-neutral-300 border border-neutral-700">
-          Canvas 100% · 7 Frames + Component Library
-        </span>
-        <span class="text-xs text-neutral-400">Scroll horizontally to view all artboards side-by-side</span>
-      </div>
-      <button onclick="setViewMode('simulator')" class="text-xs text-brandPink hover:text-white flex items-center gap-1.5 transition underline">
-        <span>Open interactive device view</span>
-        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-      </button>
-    </div>
-
-    <!-- Artboards Horizontal Sequence -->
-    <div class="flex items-start gap-10 min-w-max pb-16">
-
-      <!-- ============================================== -->
-      <!-- FRAME 0: COMPONENT & BUTTON LIBRARY COLUMN -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-5 pt-3">
-        <div class="text-[11px] font-mono text-neutral-400 flex items-center gap-1">
-          <i class="fa-solid fa-shapes text-neutral-500"></i>
-          <span>Components / Nav Pill Variants</span>
-        </div>
-
-        <!-- Figma Component Set Container with purple outline -->
-        <div class="p-4 rounded-xl border border-dashed border-purple-500/60 bg-purple-950/10 space-y-4">
-          
-          <!-- Menu Button States -->
-          <div class="space-y-2">
-            <span class="text-[10px] text-purple-400 font-mono">Nav Pill / Dark</span>
-            <div class="w-32 py-2 px-4 rounded-xl bg-brandBurgundy text-brandPink text-xs font-serif text-center font-semibold shadow">
-              Menu
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <span class="text-[10px] text-purple-400 font-mono">Nav Pill / Soft Rose</span>
-            <div class="w-32 py-2 px-4 rounded-xl bg-brandTerracotta text-brandCream text-xs font-serif text-center font-semibold shadow">
-              Locations
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <div class="w-32 py-2 px-4 rounded-xl bg-brandBurgundy text-brandPink text-xs font-serif text-center font-semibold shadow">
-              Contact
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <div class="w-32 py-2 px-4 rounded-xl bg-brandTerracotta text-brandCream text-xs font-serif text-center font-semibold shadow">
-              About
-            </div>
-          </div>
-
-          <!-- PLACE ORDER Pill Component (Double Border) -->
-          <div class="pt-4 border-t border-purple-500/30 space-y-3">
-            <span class="text-[10px] text-purple-400 font-mono">Order CTA / Capsule</span>
-            <button class="w-36 py-2 rounded-full bg-brandBurgundy text-white text-[11px] font-serif tracking-widest uppercase font-bold figma-pill-outline shadow-lg flex items-center justify-center">
-              PLACE ORDER
-            </button>
-            <button class="w-36 py-2 rounded-full bg-brandBurgundyLight text-white text-[11px] font-serif tracking-widest uppercase font-bold figma-pill-outline shadow-lg flex items-center justify-center opacity-90">
-              PLACE ORDER
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 1: HOME / HERO (SCREEN 1) -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>01 · Home - Screen 1</span>
-          <span class="text-[10px] text-neutral-500">390 x 844</span>
-        </div>
-
-        <div class="w-[320px] h-[670px] bg-brandPink rounded-[32px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/30 relative">
-          <!-- Header -->
-          <div class="px-5 pt-5 pb-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="font-cormorant font-bold text-sm tracking-widest text-brandBurgundy">DEEDEE'S BAKERY</span>
-              <i class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-            </div>
-            <div class="flex flex-col gap-1 items-end">
-              <span class="w-5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-3.5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-4 h-[2px] bg-brandBurgundy rounded-full"></span>
-            </div>
-          </div>
-
-          <!-- Dessert Composition Graphic matching Figma Hero -->
-          <div class="px-4 flex-1 flex flex-col justify-center relative">
-            <div class="relative w-full h-[470px] rounded-[26px] overflow-hidden bg-white/40 border border-white/60 p-2.5 flex flex-col justify-between">
-              
-              <!-- Top Row: Cake Slice & Ice Cream Scoop -->
-              <div class="grid grid-cols-2 gap-2 h-1/2">
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop&q=80" 
-                       alt="Strawberry cake slice on vintage plate" 
-                       class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&auto=format&fit=crop&q=80" 
-                       alt="Vanilla ice cream scoops" 
-                       class="w-full h-full object-cover">
-                </div>
-              </div>
-
-              <!-- Bottom Row: Sundae & Strawberry Cup -->
-              <div class="grid grid-cols-2 gap-2 h-1/2 mt-2">
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80" 
-                       alt="Chocolate fudge dessert" 
-                       class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80" 
-                       alt="Strawberry drink dessert cup" 
-                       class="w-full h-full object-cover">
-                </div>
-              </div>
-
-              <!-- Centered CTA Pill "PLACE ORDER" -->
-              <div class="absolute bottom-5 inset-x-0 flex justify-center z-10">
-                <button onclick="jumpPrototype('menu', 'cake')" class="figma-order-pill px-6 py-2 rounded-full font-serif text-[11px] tracking-widest uppercase font-bold cursor-pointer">
-                  PLACE ORDER
-                </button>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="h-4"></div>
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 2: HOME / HERO (SCREEN 2 - STATE VARIANT) -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>02 · Home - Screen 2</span>
-          <span class="text-[10px] text-neutral-500">Prototype State</span>
-        </div>
-
-        <div class="w-[320px] h-[670px] bg-brandPink rounded-[32px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/30 relative">
-          <!-- Header -->
-          <div class="px-5 pt-5 pb-3 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="font-cormorant font-bold text-sm tracking-widest text-brandBurgundy">DEEDEE'S BAKERY</span>
-              <i class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-            </div>
-            <div class="flex flex-col gap-1 items-end">
-              <span class="w-5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-3.5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-4 h-[2px] bg-brandBurgundy rounded-full"></span>
-            </div>
-          </div>
-
-          <!-- Hero Food Showcase Image (Exact composition matching Figma hero) -->
-          <div class="px-4 flex-1 flex flex-col justify-center relative">
-            <div class="relative w-full h-[470px] rounded-[26px] overflow-hidden bg-white/40 border border-white/60 p-2.5 flex flex-col justify-between">
-              
-              <div class="grid grid-cols-2 gap-2 h-1/2">
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop&q=80" 
-                       alt="Strawberry cake slice" 
-                       class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&auto=format&fit=crop&q=80" 
-                       alt="Caramel Vanilla Ice cream" 
-                       class="w-full h-full object-cover">
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2 h-1/2 mt-2">
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80" 
-                       alt="Fudge dessert bowl" 
-                       class="w-full h-full object-cover">
-                </div>
-                <div class="rounded-2xl overflow-hidden relative shadow">
-                  <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80" 
-                       alt="Pink dessert cup" 
-                       class="w-full h-full object-cover">
-                </div>
-              </div>
-
-              <!-- Centered CTA Pill "PLACE ORDER" (Hover state) -->
-              <div class="absolute bottom-5 inset-x-0 flex justify-center z-10">
-                <button onclick="jumpPrototype('menu', 'cake')" class="figma-order-pill px-6 py-2 rounded-full font-serif text-[11px] tracking-widest uppercase font-bold cursor-pointer bg-brandBurgundyDark scale-105">
-                  PLACE ORDER
-                </button>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="h-4"></div>
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 3: CONTACT US SCREEN + FLOATING CARD -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>03 · Contact Us</span>
-          <span class="text-[10px] text-neutral-500">Blush Pink #F4C2BE</span>
-        </div>
-
-        <div class="flex flex-col gap-6">
-          <div class="w-[320px] h-[670px] bg-brandPink rounded-[32px] shadow-2xl overflow-hidden flex flex-col justify-between border border-white/30 p-6 relative">
-            
-            <!-- Header -->
-            <div>
-              <div class="flex items-center justify-between pb-4">
-                <div class="flex items-center gap-2">
-                  <span class="font-cormorant font-bold text-sm tracking-widest text-brandBurgundy">DEEDEE'S BAKERY</span>
-                  <i class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-                </div>
-                <div class="flex flex-col gap-1 items-end">
-                  <span class="w-5 h-[2px] bg-brandBurgundy rounded-full"></span>
-                  <span class="w-3.5 h-[2px] bg-brandBurgundy rounded-full"></span>
-                  <span class="w-4 h-[2px] bg-brandBurgundy rounded-full"></span>
-                </div>
-              </div>
-
-              <h2 class="font-serif text-2xl font-bold text-brandBurgundy mt-4 mb-6">Contact Us</h2>
-
-              <!-- Contact Items List matching PNG icons -->
-              <div class="space-y-5 text-brandBurgundy font-medium text-xs">
-                <div class="flex items-center gap-3.5">
-                  <i class="fa-solid fa-phone text-sm opacity-80 w-5 text-center"></i>
-                  <span class="tracking-wide font-semibold">+234 814 857 1810</span>
-                </div>
-
-                <div class="flex items-center gap-3.5">
-                  <i class="fa-regular fa-envelope text-sm opacity-80 w-5 text-center"></i>
-                  <span class="tracking-wide">deedeesbakery@mail.com</span>
-                </div>
-
-                <div class="flex items-center gap-3.5">
-                  <i class="fa-brands fa-instagram text-base opacity-80 w-5 text-center"></i>
-                  <span class="tracking-wide font-semibold">@01deedee</span>
-                </div>
-
-                <div class="flex items-center gap-3.5">
-                  <i class="fa-brands fa-whatsapp text-base opacity-80 w-5 text-center"></i>
-                  <span class="tracking-wide font-semibold">@01deedee</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Soft decorative footer text -->
-            <div class="text-[11px] text-brandBurgundy/70 font-serif italic text-center pb-2">
-              Freshly baked with love, dawn till dusk.
-            </div>
-          </div>
-
-          <!-- Terracotta Rounded Menu Drawer Card beneath Contact screen in Figma -->
-          <div class="self-center flex flex-col items-center">
-            <span class="text-[10px] text-neutral-500 font-mono mb-1.5">Floating Menu Drawer Card</span>
-            <div class="w-36 bg-brandTerracotta rounded-2xl p-3 shadow-xl border border-white/30 text-center space-y-1.5">
-              <button onclick="jumpPrototype('menu', 'cake')" class="w-full text-xs text-brandCream hover:font-bold py-1 font-serif transition">Menu</button>
-              <button onclick="jumpPrototype('locations')" class="w-full text-xs text-brandCream hover:font-bold py-1 font-serif transition">Locations</button>
-              <button onclick="jumpPrototype('contact')" class="w-full text-xs text-brandCream hover:font-bold py-1 font-serif transition">Contact</button>
-              <button onclick="jumpPrototype('about')" class="w-full text-xs text-brandCream hover:font-bold py-1 font-serif transition">About</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 4: CAKE MENU SCREEN -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>04 · Cake Menu</span>
-          <span class="text-[10px] text-neutral-500">Blush Pink #F4C2BE</span>
-        </div>
-
-        <div class="w-[320px] h-[670px] bg-brandPink rounded-[32px] shadow-2xl overflow-y-auto border border-white/30 p-5 relative">
-          
-          <!-- Header -->
-          <div class="flex items-center justify-between pb-3">
-            <div class="flex items-center gap-2">
-              <span class="font-cormorant font-bold text-sm tracking-widest text-brandBurgundy">DEEDEE'S BAKERY</span>
-              <i class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-            </div>
-            <div class="flex flex-col gap-1 items-end">
-              <span class="w-5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-3.5 h-[2px] bg-brandBurgundy rounded-full"></span>
-              <span class="w-4 h-[2px] bg-brandBurgundy rounded-full"></span>
-            </div>
-          </div>
-
-          <!-- Top Pill Switcher: White circle on left for Cake -->
-          <div class="flex justify-center my-3">
-            <div class="bg-brandPinkSoft/90 border border-white/60 rounded-full p-1 w-44 flex items-center justify-between shadow-inner cursor-pointer" onclick="jumpPrototype('menu', 'icecream')">
-              <div class="w-6 h-6 rounded-full bg-white shadow-sm"></div>
-              <span class="font-serif font-bold text-xs text-brandBurgundy pr-4">Cake</span>
-            </div>
-          </div>
-
-          <!-- Cake Product List with Circular Images on Left & Titles on Right -->
-          <div class="space-y-4 pt-2">
-            
-            <!-- Red Velvet -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=400&auto=format&fit=crop&q=80" 
-                     alt="Red Velvet Cake" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-brandBurgundy">
-                <h4 class="text-xs font-semibold">Red Velvet Cake</h4>
-                <p class="text-[10px] text-brandBurgundy/75 font-sans">Velvety crumb & rich cream cheese</p>
-              </div>
-            </div>
-
-            <!-- Traditional Vanilla Bean Layer Cake -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=400&auto=format&fit=crop&q=80" 
-                     alt="Vanilla Butter Layer Cake" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-brandBurgundy">
-                <h4 class="text-xs font-semibold">Vanilla Butter Layer Cake</h4>
-                <p class="text-[10px] text-brandBurgundy/75 font-sans">Madagascar vanilla sponge</p>
-              </div>
-            </div>
-
-            <!-- Carrot Cake -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&auto=format&fit=crop&q=80" 
-                     alt="Carrot Cake with Cream Cheese Frosting" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-brandBurgundy">
-                <h4 class="text-xs font-semibold leading-snug">Carrot Cake with Cream Cheese Frosting</h4>
-                <p class="text-[10px] text-brandBurgundy/75 font-sans">Spiced pecans & raisins</p>
-              </div>
-            </div>
-
-            <!-- Strawberry Shortcake -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&auto=format&fit=crop&q=80" 
-                     alt="Strawberry Shortcake" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-brandBurgundy">
-                <h4 class="text-xs font-semibold">Strawberry Shortcake</h4>
-                <p class="text-[10px] text-brandBurgundy/75 font-sans">Macerated garden berries & cream</p>
-              </div>
-            </div>
-
-            <!-- Triple Chocolate Truffle Cake -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&auto=format&fit=crop&q=80" 
-                     alt="Triple Chocolate Truffle Cake" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-brandBurgundy">
-                <h4 class="text-xs font-semibold">Triple Chocolate Truffle Cake</h4>
-                <p class="text-[10px] text-brandBurgundy/75 font-sans">Dark Valrhona ganache layers</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 5: ICE CREAM MENU SCREEN -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>05 · Ice Cream Menu</span>
-          <span class="text-[10px] text-neutral-500">Olive Sage #5C6251</span>
-        </div>
-
-        <div class="w-[320px] h-[670px] bg-brandOlive rounded-[32px] shadow-2xl overflow-y-auto border border-white/20 p-5 relative">
-          
-          <!-- Header -->
-          <div class="flex items-center justify-between pb-3">
-            <div class="flex items-center gap-2">
-              <span class="font-cormorant font-bold text-sm tracking-widest text-white">DEEDEE'S BAKERY</span>
-              <i class="fa-solid fa-cake-candles text-white text-xs"></i>
-            </div>
-            <div class="flex flex-col gap-1 items-end">
-              <span class="w-5 h-[2px] bg-white rounded-full"></span>
-              <span class="w-3.5 h-[2px] bg-white rounded-full"></span>
-              <span class="w-4 h-[2px] bg-white rounded-full"></span>
-            </div>
-          </div>
-
-          <!-- Top Pill Switcher: White circle on right for Ice Cream -->
-          <div class="flex justify-center my-3">
-            <div class="bg-[#4E5443] border border-white/30 rounded-full p-1 w-44 flex items-center justify-between shadow-inner cursor-pointer" onclick="jumpPrototype('menu', 'cake')">
-              <span class="font-serif font-bold text-xs text-white pl-4">Ice cream</span>
-              <div class="w-6 h-6 rounded-full bg-white shadow-sm"></div>
-            </div>
-          </div>
-
-          <!-- Ice Cream Product List with Circular Images on Left & Crisp White Text -->
-          <div class="space-y-4 pt-2">
-            
-            <!-- Vanilla Bean -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&auto=format&fit=crop&q=80" 
-                     alt="Vanilla Bean Ice Cream" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-white">
-                <h4 class="text-xs font-semibold">Vanilla Bean Ice Cream</h4>
-                <p class="text-[10px] text-white/70 font-sans">Organic milk & flecked vanilla pods</p>
-              </div>
-            </div>
-
-            <!-- Chocolate Fudge Brownie -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&auto=format&fit=crop&q=80" 
-                     alt="Chocolate Fudge Brownie Ice Cream" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-white">
-                <h4 class="text-xs font-semibold leading-snug">Chocolate Fudge Brownie Ice Cream</h4>
-                <p class="text-[10px] text-white/70 font-sans">Fudgy chunks in chocolate cream</p>
-              </div>
-            </div>
-
-            <!-- Strawberry Bliss -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?w=400&auto=format&fit=crop&q=80" 
-                     alt="Strawberry Bliss Ice Cream" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-white">
-                <h4 class="text-xs font-semibold">Strawberry Bliss Ice Cream</h4>
-                <p class="text-[10px] text-white/70 font-sans">Sun-ripened strawberry ribbon</p>
-              </div>
-            </div>
-
-            <!-- Mint Chocolate Chip -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?w=400&auto=format&fit=crop&q=80" 
-                     alt="Mint Chocolate Chip Ice Cream" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-white">
-                <h4 class="text-xs font-semibold">Mint Chocolate Chip Ice Cream</h4>
-                <p class="text-[10px] text-white/70 font-sans">Fresh garden mint & chocolate flakes</p>
-              </div>
-            </div>
-
-            <!-- Salted Caramel -->
-            <div class="flex items-center gap-3">
-              <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                <img src="https://images.unsplash.com/photo-1580915411954-282cb1b0d780?w=400&auto=format&fit=crop&q=80" 
-                     alt="Salted Caramel Ice Cream" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="font-serif text-white">
-                <h4 class="text-xs font-semibold">Salted Caramel Ice Cream</h4>
-                <p class="text-[10px] text-white/70 font-sans">Sea salt & slow-churned butter caramel</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 6: ABOUT US SCREEN (LONG EDITORIAL STORY) -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>06 · About Us</span>
-          <span class="text-[10px] text-neutral-500">Tall Editorial Frame</span>
-        </div>
-
-        <div class="w-[320px] h-[920px] bg-brandPink rounded-[32px] shadow-2xl overflow-y-auto border border-white/30 p-5 flex flex-col justify-between relative">
-          
-          <div>
-            <!-- Header -->
-            <div class="flex items-center justify-between pb-3">
-              <div class="flex items-center gap-2">
-                <span class="font-cormorant font-bold text-sm tracking-widest text-brandBurgundy">DEEDEE'S BAKERY</span>
-                <i class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-              </div>
-              <div class="flex flex-col gap-1 items-end">
-                <span class="w-5 h-[2px] bg-brandBurgundy rounded-full"></span>
-                <span class="w-3.5 h-[2px] bg-brandBurgundy rounded-full"></span>
-                <span class="w-4 h-[2px] bg-brandBurgundy rounded-full"></span>
-              </div>
-            </div>
-
-            <h2 class="font-serif text-2xl font-bold text-brandBurgundy mt-3 mb-4">About Us</h2>
-
-            <!-- Exact justified storytelling paragraphs from the Figma artboard -->
-            <div class="text-[10px] text-brandBurgundy leading-relaxed text-justify space-y-3 font-serif">
-              <p>
-                My story began with my Grandfather’s kitchen notes. He loved the rhythm of sourdough starters and the smell of toasted hearth loaves at dawn. I was founded on the corner of Elm and Maple in 2004, and we have remained committed to pure ingredients: stone-milled unbleached flour, cultured butter, and eggs straight from the farm.
-              </p>
-              <p>
-                In the early days, deep hot morning tea would meet sweet golden biscuits. We folded every dough with pastry scrapers and baked slowly until each loaf rang hollow with golden crust.
-              </p>
-              <p>
-                We source fresh cream, whole Madagascar vanilla pods, organic strawberries from the valley, and single-origin chocolates. Slow-churning ice cream has kept our parlor a neighborhood fixture through every sweet season.
-              </p>
-              <p>
-                Whether celebrating a wedding milestone or grabbing a midday cinnamon bun, our bakery welcomes you with warmth, heritage, and genuine craft.
-              </p>
-            </div>
-          </div>
-
-          <!-- Vintage Bakery Interior & Stone Hearth Oven Picture (exact match to Figma) -->
-          <div class="mt-4 rounded-2xl overflow-hidden shadow-lg border-2 border-white/80 bg-neutral-800">
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=700&auto=format&fit=crop&q=80" 
-                 alt="Vintage Patisserie Bakery stone oven with artisan bread loaves" 
-                 class="w-full h-48 object-cover">
-            <div class="p-2 bg-brandBurgundy text-center text-white text-[9px] font-serif tracking-widest uppercase">
-              BAKERY & PASTRIES · STONE HEARTH TRADITION
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ============================================== -->
-      <!-- FRAME 7: LOCATIONS SCREEN -->
-      <!-- ============================================== -->
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-between text-xs text-neutral-400 font-mono px-1">
-          <span>07 · Locations</span>
-          <span class="text-[10px] text-neutral-500">Olive Sage #5C6251</span>
-        </div>
-
-        <div class="w-[320px] h-[670px] bg-brandOlive rounded-[32px] shadow-2xl overflow-y-auto border border-white/20 p-5 relative flex flex-col justify-between">
-          
-          <div>
-            <!-- Header -->
-            <div class="flex items-center justify-between pb-3">
-              <div class="flex items-center gap-2">
-                <span class="font-cormorant font-bold text-sm tracking-widest text-white">DEEDEE'S BAKERY</span>
-                <i class="fa-solid fa-cake-candles text-white text-xs"></i>
-              </div>
-              <div class="flex flex-col gap-1 items-end">
-                <span class="w-5 h-[2px] bg-white rounded-full"></span>
-                <span class="w-3.5 h-[2px] bg-white rounded-full"></span>
-                <span class="w-4 h-[2px] bg-white rounded-full"></span>
-              </div>
-            </div>
-
-            <h2 class="font-serif text-2xl font-bold text-white mt-3 mb-5">Locations</h2>
-
-            <!-- 3 Locations List matching PNG exactly -->
-            <div class="space-y-4">
-              
-              <!-- Location 1: Ikeja / Aviation City -->
-              <div class="flex items-center justify-between gap-2 bg-black/10 p-2 rounded-2xl border border-white/10">
-                <div class="flex items-center gap-3">
-                  <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/60 artboard-circle-shadow">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop&q=80" 
-                         alt="Ikeja, Lagos City" 
-                         class="w-full h-full object-cover">
-                  </div>
-                  <div>
-                    <h4 class="font-serif text-white font-bold text-xs">Ikeja, Lagos City</h4>
-                    <p class="text-[9.5px] text-white/70">GRA Aviation District</p>
-                  </div>
-                </div>
-                <button onclick="openLiveMapModal('Ikeja, Lagos City', '14 Joel Ogunnaike St, Ikeja GRA, Lagos', '8:00 AM - 9:00 PM', '+234 814 857 1810')" 
-                        class="px-3 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white/60 text-[10px] font-serif font-bold uppercase transition">
-                  MAP
-                </button>
-              </div>
-
-              <!-- Location 2: King Promenade MALL Phase II -->
-              <div class="flex items-center justify-between gap-2 bg-black/10 p-2 rounded-2xl border border-white/10">
-                <div class="flex items-center gap-3">
-                  <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/60 artboard-circle-shadow">
-                    <img src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=400&auto=format&fit=crop&q=80" 
-                         alt="King Promenade MALL" 
-                         class="w-full h-full object-cover">
-                  </div>
-                  <div>
-                    <h4 class="font-serif text-white font-bold text-xs">King Promenade MALL</h4>
-                    <p class="text-[9.5px] text-white/70">Phase II, Ground Atrium</p>
-                  </div>
-                </div>
-                <button onclick="openLiveMapModal('King Promenade MALL', 'Promenade Galleria Mall, Level 1, Phase II, Lagos', '9:00 AM - 10:00 PM', '+234 814 857 1811')" 
-                        class="px-3 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white/60 text-[10px] font-serif font-bold uppercase transition">
-                  MAP
-                </button>
-              </div>
-
-              <!-- Location 3: Victoria Island / Behind Fresh Mart -->
-              <div class="flex items-center justify-between gap-2 bg-black/10 p-2 rounded-2xl border border-white/10">
-                <div class="flex items-center gap-3">
-                  <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/60 artboard-circle-shadow">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&auto=format&fit=crop&q=80" 
-                         alt="Victoria Island Kiosk" 
-                         class="w-full h-full object-cover">
-                  </div>
-                  <div>
-                    <h4 class="font-serif text-white font-bold text-xs">Behind Fresh Mart</h4>
-                    <p class="text-[9.5px] text-white/70">Supermarket Grove Rd, V.I.</p>
-                  </div>
-                </div>
-                <button onclick="openLiveMapModal('Victoria Island Kiosk', '7 Grove Road, Behind Fresh Mart, V.I., Lagos', '7:00 AM - 8:30 PM', '+234 814 857 1812')" 
-                        class="px-3 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white/60 text-[10px] font-serif font-bold uppercase transition">
-                  MAP
-                </button>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-white/15 text-center">
-            <span class="text-[10px] text-white/80 font-serif">Curbside Pickup & In-Store Tastings Available</span>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========================================================================= -->
-  <!-- VIEW 2: INTERACTIVE MOBILE PROTOTYPE SIMULATOR -->
-  <!-- ========================================================================= -->
-  <section id="simulator-view" class="hidden flex-1 flex-col items-center justify-center p-3 md:p-6 bg-neutral-900 min-h-[calc(100vh-56px)]">
-    
-    <!-- Mobile Hardware Frame -->
-    <div id="sim-shell" class="w-full max-w-[390px] h-[844px] max-h-[92dvh] bg-brandPink rounded-[46px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-[6px] border-[#2c2c2c] relative flex flex-col overflow-hidden transition-colors duration-300">
+  <!-- ================= HERO SECTION ================= -->
+  <section id="hero" class="relative pt-12 pb-20 md:py-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
-      <!-- Top Speaker Notch & Dynamic Island Pill -->
-      <div class="absolute top-2 inset-x-0 flex justify-center z-50 pointer-events-none">
-        <div class="w-24 h-4 bg-black rounded-full flex items-center justify-end px-2">
-          <div class="w-2 h-2 rounded-full bg-emerald-500/80"></div>
+      <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+        <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-wine-dark/10 text-wine-dark text-xs font-bold tracking-wider uppercase">
+          <span>✨</span>
+          <span>Freshly Baked Every Morning</span>
+        </div>
+        <h1 class="text-4xl sm:text-6xl xl:text-7xl font-serif-vintage font-bold text-wine-dark leading-[1.1]">
+          Sweet Delights, <br>
+          <span class="italic font-normal">Fresh Daily.</span>
+        </h1>
+        <p class="text-base sm:text-lg text-wine-dark/80 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+          From grandfather's stone-oven recipes to slow-churned farm ice creams. Handcrafted layers, pure cream, and the finest natural ingredients.
+        </p>
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+          <a href="#menu" class="px-8 py-3.5 rounded-full bg-wine-dark text-blush-pink font-bold text-xs uppercase tracking-widest hover:bg-wine-deep transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            Explore Menu
+          </a>
+          <a href="#locations" class="px-8 py-3.5 rounded-full border-2 border-wine-dark text-wine-dark font-bold text-xs uppercase tracking-widest hover:bg-wine-dark hover:text-blush-pink transition-all">
+            Find A Branch
+          </a>
         </div>
       </div>
 
-      <!-- App Header -->
-      <header id="sim-header" class="pt-7 px-5 pb-3 flex items-center justify-between z-30 transition-colors duration-300">
-        <!-- Logo -->
-        <button onclick="jumpPrototype('home')" class="flex items-center gap-2 group text-left focus:outline-none">
-          <span id="sim-brand-title" class="font-cormorant font-bold text-base tracking-widest text-brandBurgundy group-hover:opacity-80 transition">DEEDEE'S BAKERY</span>
-          <i id="sim-brand-icon" class="fa-solid fa-cake-candles text-brandBurgundy text-xs"></i>
-        </button>
-
-        <!-- Right Controls: Cart & Hamburger Drawer Trigger -->
-        <div class="flex items-center gap-3">
-          <button onclick="openCartModal()" aria-label="Cart" class="relative p-1.5 focus:outline-none">
-            <i id="sim-cart-icon" class="fa-solid fa-bag-shopping text-base text-brandBurgundy"></i>
-            <span id="sim-cart-badge" class="absolute -top-1 -right-1.5 w-4 h-4 rounded-full bg-brandBurgundy text-white text-[9px] font-bold flex items-center justify-center scale-0 transition-transform">0</span>
-          </button>
-
-          <!-- Figma Hamburger 3-Line Menu -->
-          <button onclick="toggleFloatingMenu()" aria-label="Menu" class="p-1 focus:outline-none">
-            <div class="flex flex-col gap-1 items-end">
-              <span id="h-bar-1" class="w-5 h-[2px] bg-brandBurgundy rounded-full transition-all"></span>
-              <span id="h-bar-2" class="w-3.5 h-[2px] bg-brandBurgundy rounded-full transition-all"></span>
-              <span id="h-bar-3" class="w-4 h-[2px] bg-brandBurgundy rounded-full transition-all"></span>
-            </div>
-          </button>
+      <!-- Hero Images (Desktop Collage) -->
+      <div class="lg:col-span-6 grid grid-cols-2 gap-4 sm:gap-6 relative">
+        <div class="space-y-4 sm:space-y-6">
+          <div class="rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] transform hover:scale-[1.02] transition-transform">
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80" alt="Artisan Cake Slice" class="w-full h-full object-cover">
+          </div>
+          <div class="rounded-3xl overflow-hidden shadow-xl aspect-square transform hover:scale-[1.02] transition-transform">
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80" alt="Ice Cream Scoops" class="w-full h-full object-cover">
+          </div>
         </div>
-      </header>
-
-      <!-- Exact Figma Floating Terracotta Drawer Card Overlay -->
-      <div id="sim-floating-card" class="absolute top-16 right-5 z-40 bg-brandTerracotta rounded-2xl p-3 shadow-2xl border border-white/30 text-center space-y-1 w-36 transition-all duration-200 opacity-0 scale-95 pointer-events-none">
-        <button onclick="jumpPrototype('menu', 'cake')" class="w-full text-xs text-brandCream hover:font-bold py-1.5 rounded-lg hover:bg-black/10 font-serif transition">Menu</button>
-        <button onclick="jumpPrototype('locations')" class="w-full text-xs text-brandCream hover:font-bold py-1.5 rounded-lg hover:bg-black/10 font-serif transition">Locations</button>
-        <button onclick="jumpPrototype('contact')" class="w-full text-xs text-brandCream hover:font-bold py-1.5 rounded-lg hover:bg-black/10 font-serif transition">Contact</button>
-        <button onclick="jumpPrototype('about')" class="w-full text-xs text-brandCream hover:font-bold py-1.5 rounded-lg hover:bg-black/10 font-serif transition">About</button>
+        <div class="space-y-4 sm:space-y-6 pt-8 sm:pt-12">
+          <div class="rounded-3xl overflow-hidden shadow-xl aspect-square transform hover:scale-[1.02] transition-transform">
+            <img src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=600&auto=format&fit=crop&q=80" alt="Red Velvet Cake" class="w-full h-full object-cover">
+          </div>
+          <div class="rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] transform hover:scale-[1.02] transition-transform">
+            <img src="https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?w=800&auto=format&fit=crop&q=80" alt="Berry Ice Cream" class="w-full h-full object-cover">
+          </div>
+        </div>
       </div>
 
-      <!-- Main Scrollable Screen Body in Simulator -->
-      <main id="sim-scroll-body" class="flex-1 overflow-y-auto relative pb-16">
-        
-        <!-- ======================= -->
-        <!-- SIMULATOR: HOME SCREEN -->
-        <!-- ======================= -->
-        <section id="proto-screen-home" class="proto-transition proto-active p-5 min-h-full flex flex-col justify-between">
-          <div class="relative w-full rounded-[26px] overflow-hidden bg-white/40 border border-white/60 p-2.5 shadow-xl flex flex-col justify-between h-[490px]">
-            
-            <div class="grid grid-cols-2 gap-2 h-1/2">
-              <div class="rounded-2xl overflow-hidden relative shadow">
-                <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&auto=format&fit=crop&q=80" 
-                     alt="Strawberry Cake Slice" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="rounded-2xl overflow-hidden relative shadow">
-                <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&auto=format&fit=crop&q=80" 
-                     alt="Vanilla Ice Cream Scoops" 
-                     class="w-full h-full object-cover">
-              </div>
-            </div>
+    </div>
+  </section>
 
-            <div class="grid grid-cols-2 gap-2 h-1/2 mt-2">
-              <div class="rounded-2xl overflow-hidden relative shadow">
-                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80" 
-                     alt="Dessert sundae bowl" 
-                     class="w-full h-full object-cover">
-              </div>
-              <div class="rounded-2xl overflow-hidden relative shadow">
-                <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80" 
-                     alt="Pink milkshake with straw" 
-                     class="w-full h-full object-cover">
-              </div>
-            </div>
+  <!-- ================= MENU SECTION WITH FIGMA DUAL TOGGLE ================= -->
+  <section id="menu" class="py-20 transition-colors duration-500" id="menu-section">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-3xl sm:text-5xl font-serif-vintage font-bold tracking-tight mb-4" id="menu-heading">
+          Our Handcrafted Offerings
+        </h2>
+        <p class="text-sm sm:text-base opacity-80" id="menu-subheading">
+          Switch between our bakery cakes and fresh, slow-churned ice creams.
+        </p>
 
-            <!-- Floating CTA Button -->
-            <div class="absolute bottom-6 inset-x-0 flex justify-center z-10">
-              <button onclick="jumpPrototype('menu', 'cake')" class="figma-order-pill px-8 py-2.5 rounded-full font-serif text-xs tracking-widest uppercase font-bold">
-                PLACE ORDER
-              </button>
-            </div>
+        <!-- Figma Dual Pill Switcher -->
+        <div class="inline-flex mt-8 p-1.5 rounded-full bg-black/10 backdrop-blur-md border border-white/20 shadow-inner">
+          <button onclick="setMenuCategory('cake')" id="toggle-cake" class="px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 bg-white text-wine-dark shadow-md">
+            🎂 Cakes & Confectionery
+          </button>
+          <button onclick="setMenuCategory('icecream')" id="toggle-icecream" class="px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 text-stone-700 hover:text-stone-900">
+            🍨 Artisan Ice Cream
+          </button>
+        </div>
+      </div>
+
+      <!-- Cakes Grid -->
+      <div id="grid-cake" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Item 1 -->
+        <div class="bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white/40 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-white mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=400&auto=format&fit=crop&q=80" alt="Red Velvet Cake" class="w-full h-full object-cover">
           </div>
-
-          <div class="mt-4 flex items-center justify-between text-xs text-brandBurgundy px-1">
-            <span class="font-serif italic font-semibold">Artisan Pastries & Creamery</span>
-            <button onclick="jumpPrototype('about')" class="underline hover:opacity-80">Our Story →</button>
-          </div>
-        </section>
-
-        <!-- ======================= -->
-        <!-- SIMULATOR: MENU SCREEN -->
-        <!-- ======================= -->
-        <section id="proto-screen-menu" class="proto-transition proto-hidden p-5">
-          
-          <!-- Cake / Ice Cream Pill Switcher -->
-          <div class="flex justify-center mb-5 sticky top-0 z-20 py-1">
-            <div id="proto-menu-toggle" class="bg-brandPinkSoft border border-white/60 rounded-full p-1 w-48 flex items-center justify-between shadow-inner cursor-pointer" onclick="toggleMenuTab()">
-              <div id="proto-toggle-circle" class="w-6 h-6 rounded-full bg-white shadow-sm transition-all duration-300"></div>
-              <span id="proto-toggle-label" class="font-serif font-bold text-xs text-brandBurgundy pr-5 transition-colors">Cake</span>
-            </div>
-          </div>
-
-          <!-- CAKE LIST VIEW -->
-          <div id="proto-cake-list" class="space-y-4">
-            
-            <div class="flex items-center justify-between bg-white/30 backdrop-blur-xs p-2.5 rounded-2xl border border-white/50">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=400&auto=format&fit=crop&q=80" alt="Red Velvet" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-brandBurgundy font-semibold text-xs">Red Velvet Cake</h4>
-                  <p class="text-[10px] text-brandBurgundy/70">$6.50 / slice</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Red Velvet Cake', 6.50)" class="w-7 h-7 rounded-full bg-brandBurgundy text-white flex items-center justify-center text-xs hover:bg-brandBurgundyDark transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-white/30 backdrop-blur-xs p-2.5 rounded-2xl border border-white/50">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=400&auto=format&fit=crop&q=80" alt="Vanilla Layer" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-brandBurgundy font-semibold text-xs">Vanilla Butter Layer Cake</h4>
-                  <p class="text-[10px] text-brandBurgundy/70">$6.00 / slice</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Vanilla Butter Layer Cake', 6.00)" class="w-7 h-7 rounded-full bg-brandBurgundy text-white flex items-center justify-center text-xs hover:bg-brandBurgundyDark transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-white/30 backdrop-blur-xs p-2.5 rounded-2xl border border-white/50">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&auto=format&fit=crop&q=80" alt="Carrot Cake" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-brandBurgundy font-semibold text-xs leading-tight">Carrot Cake w/ Cream Cheese</h4>
-                  <p class="text-[10px] text-brandBurgundy/70">$6.75 / slice</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Carrot Cake w/ Cream Cheese', 6.75)" class="w-7 h-7 rounded-full bg-brandBurgundy text-white flex items-center justify-center text-xs hover:bg-brandBurgundyDark transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-white/30 backdrop-blur-xs p-2.5 rounded-2xl border border-white/50">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&auto=format&fit=crop&q=80" alt="Strawberry Shortcake" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-brandBurgundy font-semibold text-xs">Strawberry Shortcake</h4>
-                  <p class="text-[10px] text-brandBurgundy/70">$7.00 / slice</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Strawberry Shortcake', 7.00)" class="w-7 h-7 rounded-full bg-brandBurgundy text-white flex items-center justify-center text-xs hover:bg-brandBurgundyDark transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-white/30 backdrop-blur-xs p-2.5 rounded-2xl border border-white/50">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&auto=format&fit=crop&q=80" alt="Triple Chocolate Truffle" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-brandBurgundy font-semibold text-xs">Triple Chocolate Truffle</h4>
-                  <p class="text-[10px] text-brandBurgundy/70">$7.25 / slice</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Triple Chocolate Truffle Cake', 7.25)" class="w-7 h-7 rounded-full bg-brandBurgundy text-white flex items-center justify-center text-xs hover:bg-brandBurgundyDark transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-          </div>
-
-          <!-- ICE CREAM LIST VIEW -->
-          <div id="proto-icecream-list" class="space-y-4 hidden">
-            
-            <div class="flex items-center justify-between bg-black/15 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&auto=format&fit=crop&q=80" alt="Vanilla Bean Ice Cream" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-semibold text-xs">Vanilla Bean Ice Cream</h4>
-                  <p class="text-[10px] text-white/70">$5.00 / scoop</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Vanilla Bean Ice Cream', 5.00)" class="w-7 h-7 rounded-full bg-white text-brandOliveDark flex items-center justify-center text-xs hover:bg-neutral-200 transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-black/15 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&auto=format&fit=crop&q=80" alt="Chocolate Fudge Brownie" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-semibold text-xs leading-tight">Chocolate Fudge Brownie</h4>
-                  <p class="text-[10px] text-white/70">$5.50 / scoop</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Chocolate Fudge Brownie', 5.50)" class="w-7 h-7 rounded-full bg-white text-brandOliveDark flex items-center justify-center text-xs hover:bg-neutral-200 transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-black/15 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?w=400&auto=format&fit=crop&q=80" alt="Strawberry Bliss Ice Cream" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-semibold text-xs">Strawberry Bliss Ice Cream</h4>
-                  <p class="text-[10px] text-white/70">$5.25 / scoop</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Strawberry Bliss Ice Cream', 5.25)" class="w-7 h-7 rounded-full bg-white text-brandOliveDark flex items-center justify-center text-xs hover:bg-neutral-200 transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-black/15 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?w=400&auto=format&fit=crop&q=80" alt="Mint Chocolate Chip" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-semibold text-xs">Mint Chocolate Chip</h4>
-                  <p class="text-[10px] text-white/70">$5.25 / scoop</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Mint Chocolate Chip', 5.25)" class="w-7 h-7 rounded-full bg-white text-brandOliveDark flex items-center justify-center text-xs hover:bg-neutral-200 transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-black/15 backdrop-blur-xs p-2.5 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border-2 border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1580915411954-282cb1b0d780?w=400&auto=format&fit=crop&q=80" alt="Salted Caramel Ice Cream" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-semibold text-xs">Salted Caramel Ice Cream</h4>
-                  <p class="text-[10px] text-white/70">$5.75 / scoop</p>
-                </div>
-              </div>
-              <button onclick="addItemToCart('Salted Caramel Ice Cream', 5.75)" class="w-7 h-7 rounded-full bg-white text-brandOliveDark flex items-center justify-center text-xs hover:bg-neutral-200 transition">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-
-          </div>
-
-        </section>
-
-        <!-- ======================= -->
-        <!-- SIMULATOR: CONTACT SCREEN -->
-        <!-- ======================= -->
-        <section id="proto-screen-contact" class="proto-transition proto-hidden p-6">
-          <h2 class="font-serif text-2xl font-bold text-brandBurgundy mb-6">Contact Us</h2>
-
-          <div class="space-y-5 text-brandBurgundy font-medium text-xs">
-            <div onclick="showNotification('Calling +234 814 857 1810...')" class="flex items-center gap-4 cursor-pointer hover:opacity-80">
-              <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-                <i class="fa-solid fa-phone text-xs"></i>
-              </div>
-              <span class="tracking-wide font-semibold text-sm">+234 814 857 1810</span>
-            </div>
-
-            <div onclick="showNotification('Opening deedeesbakery@mail.com...')" class="flex items-center gap-4 cursor-pointer hover:opacity-80">
-              <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-                <i class="fa-regular fa-envelope text-xs"></i>
-              </div>
-              <span class="tracking-wide text-xs">deedeesbakery@mail.com</span>
-            </div>
-
-            <div onclick="showNotification('Opening Instagram @01deedee...')" class="flex items-center gap-4 cursor-pointer hover:opacity-80">
-              <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-                <i class="fa-brands fa-instagram text-sm"></i>
-              </div>
-              <span class="tracking-wide font-semibold text-xs">@01deedee</span>
-            </div>
-
-            <div onclick="showNotification('Starting WhatsApp chat @01deedee...')" class="flex items-center gap-4 cursor-pointer hover:opacity-80">
-              <div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-                <i class="fa-brands fa-whatsapp text-sm"></i>
-              </div>
-              <span class="tracking-wide font-semibold text-xs">@01deedee</span>
-            </div>
-          </div>
-
-          <div class="mt-8 bg-white/35 p-4 rounded-2xl border border-white/50 space-y-2">
-            <h4 class="font-serif font-bold text-xs text-brandBurgundy">Bespoke Celebration Cakes</h4>
-            <p class="text-[10px] text-brandBurgundy/80">Message us on WhatsApp or call for custom tiered event orders.</p>
-          </div>
-        </section>
-
-        <!-- ======================= -->
-        <!-- SIMULATOR: ABOUT US SCREEN -->
-        <!-- ======================= -->
-        <section id="proto-screen-about" class="proto-transition proto-hidden p-6 space-y-4">
-          <h2 class="font-serif text-2xl font-bold text-brandBurgundy">About Us</h2>
-
-          <div class="text-[11px] text-brandBurgundy leading-relaxed text-justify space-y-3 font-serif bg-white/25 p-4 rounded-2xl border border-white/40">
-            <p>
-              My story began with my Grandfather’s kitchen notes. He was dedicated to the craft of natural stone-milled flours and warm, yeast-fermented loaves. DEEDEE’S was founded on the corner of Elm and Maple in 2004.
-            </p>
-            <p>
-              In the early days, deep hot morning tea would meet sweet golden biscuits. We folded every dough with pasture butter, filtered spring water, organic sugars, and unbleached flours.
-            </p>
-            <p>
-              Our ice cream parlor honors slow-churned simplicity: pure fresh cream, Madagascar vanilla bean pods, and ripe berry reductions.
-            </p>
-          </div>
-
-          <div class="rounded-2xl overflow-hidden shadow-lg border-2 border-white/60">
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=700&auto=format&fit=crop&q=80" 
-                 alt="DeeDee's Artisan Patisserie and Stone Oven" 
-                 class="w-full h-44 object-cover">
-            <div class="p-2 bg-brandBurgundy text-center text-white text-[9px] font-serif uppercase tracking-widest">
-              PATISSERIE & STONE OVEN BAKING
-            </div>
-          </div>
-        </section>
-
-        <!-- ======================= -->
-        <!-- SIMULATOR: LOCATIONS SCREEN -->
-        <!-- ======================= -->
-        <section id="proto-screen-locations" class="proto-transition proto-hidden p-6 space-y-4">
-          <h2 class="font-serif text-2xl font-bold text-white">Locations</h2>
-
-          <div class="space-y-4">
-            
-            <div class="flex items-center justify-between gap-2 bg-black/15 p-3 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop&q=80" alt="Ikeja" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-bold text-xs">Ikeja, Lagos City</h4>
-                  <p class="text-[10px] text-white/70">Aviation Way, GRA</p>
-                </div>
-              </div>
-              <button onclick="openLiveMapModal('Ikeja, Lagos City', '14 Joel Ogunnaike St, Ikeja GRA, Lagos', '8:00 AM - 9:00 PM', '+234 814 857 1810')" 
-                      class="px-3.5 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white text-[10px] font-serif font-bold uppercase transition">
-                MAP
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between gap-2 bg-black/15 p-3 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=400&auto=format&fit=crop&q=80" alt="Promenade" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-bold text-xs">King Promenade MALL</h4>
-                  <p class="text-[10px] text-white/70">Phase II, Ground Floor</p>
-                </div>
-              </div>
-              <button onclick="openLiveMapModal('King Promenade MALL', 'Promenade Galleria Mall, Level 1, Phase II, Lagos', '9:00 AM - 10:00 PM', '+234 814 857 1811')" 
-                      class="px-3.5 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white text-[10px] font-serif font-bold uppercase transition">
-                MAP
-              </button>
-            </div>
-
-            <div class="flex items-center justify-between gap-2 bg-black/15 p-3 rounded-2xl border border-white/20">
-              <div class="flex items-center gap-3">
-                <div class="w-14 h-14 rounded-full overflow-hidden shrink-0 border border-white/70 artboard-circle-shadow">
-                  <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&auto=format&fit=crop&q=80" alt="Fresh Mart" class="w-full h-full object-cover">
-                </div>
-                <div>
-                  <h4 class="font-serif text-white font-bold text-xs">Behind Fresh Mart</h4>
-                  <p class="text-[10px] text-white/70">Supermarket Grove Rd, V.I.</p>
-                </div>
-              </div>
-              <button onclick="openLiveMapModal('Victoria Island Kiosk', '7 Grove Road, Behind Fresh Mart, V.I., Lagos', '7:00 AM - 8:30 PM', '+234 814 857 1812')" 
-                      class="px-3.5 py-1 rounded-full bg-white/20 hover:bg-white text-white hover:text-brandOliveDark border border-white text-[10px] font-serif font-bold uppercase transition">
-                MAP
-              </button>
-            </div>
-
-          </div>
-        </section>
-
-      </main>
-
-      <!-- Persistent Mini Bottom Bar for Easy Navigation in Simulator -->
-      <footer id="sim-bottom-bar" class="absolute bottom-0 inset-x-0 bg-white/75 backdrop-blur-md border-t border-white/40 px-3 py-2 flex justify-around items-center z-20 transition-colors duration-300">
-        <button onclick="jumpPrototype('home')" class="sim-nav-link flex flex-col items-center gap-0.5 text-brandBurgundy">
-          <i class="fa-solid fa-house text-xs"></i>
-          <span class="text-[9px] font-semibold">Home</span>
-        </button>
-        <button onclick="jumpPrototype('menu', 'cake')" class="sim-nav-link flex flex-col items-center gap-0.5 text-brandBurgundy/60 hover:text-brandBurgundy">
-          <i class="fa-solid fa-cookie-bite text-xs"></i>
-          <span class="text-[9px] font-semibold">Menu</span>
-        </button>
-        <button onclick="jumpPrototype('locations')" class="sim-nav-link flex flex-col items-center gap-0.5 text-brandBurgundy/60 hover:text-brandBurgundy">
-          <i class="fa-solid fa-location-dot text-xs"></i>
-          <span class="text-[9px] font-semibold">Stores</span>
-        </button>
-        <button onclick="jumpPrototype('contact')" class="sim-nav-link flex flex-col items-center gap-0.5 text-brandBurgundy/60 hover:text-brandBurgundy">
-          <i class="fa-solid fa-phone text-xs"></i>
-          <span class="text-[9px] font-semibold">Contact</span>
-        </button>
-        <button onclick="jumpPrototype('about')" class="sim-nav-link flex flex-col items-center gap-0.5 text-brandBurgundy/60 hover:text-brandBurgundy">
-          <i class="fa-solid fa-book-open text-xs"></i>
-          <span class="text-[9px] font-semibold">About</span>
-        </button>
-      </footer>
-
-      <!-- Shopping Cart Sheet Drawer -->
-      <div id="cart-drawer" class="absolute inset-0 bg-black/60 z-50 pointer-events-none opacity-0 transition-opacity duration-300 flex flex-col justify-end">
-        <div onclick="closeCartModal()" class="flex-1"></div>
-        <div id="cart-drawer-card" class="bg-brandCream rounded-t-[32px] p-5 border-t border-white max-h-[80%] flex flex-col translate-y-full transition-transform duration-300">
-          <div class="flex items-center justify-between pb-3 border-b border-neutral-200">
-            <div class="flex items-center gap-2">
-              <i class="fa-solid fa-bag-shopping text-brandBurgundy"></i>
-              <h3 class="font-serif font-bold text-base text-brandBurgundy">Your Bakery Bag</h3>
-            </div>
-            <button onclick="closeCartModal()" class="w-7 h-7 rounded-full bg-neutral-200 text-neutral-600 flex items-center justify-center text-xs">
-              <i class="fa-solid fa-xmark"></i>
+          <h3 class="font-serif-vintage font-bold text-xl text-wine-dark">Red Velvet Cake</h3>
+          <p class="text-xs text-wine-dark/70 mt-2 min-h-[36px]">Signature velvety cocoa sponge with whipped Madagascar cream cheese frosting.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-wine-dark/10">
+            <span class="text-lg font-bold text-wine-dark">₦8,500</span>
+            <button onclick="addToCart('Red Velvet Cake', 8500)" class="px-5 py-2 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all">
+              Add +
             </button>
           </div>
+        </div>
 
-          <div id="cart-items-container" class="py-3 space-y-2.5 overflow-y-auto flex-1">
-            <!-- Dynamic Cart Items -->
+        <!-- Item 2 -->
+        <div class="bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white/40 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-white mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?w=400&auto=format&fit=crop&q=80" alt="Vanilla Bean Layer Cake" class="w-full h-full object-cover">
           </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-wine-dark">Vanilla Bean Layer Cake</h3>
+          <p class="text-xs text-wine-dark/70 mt-2 min-h-[36px]">Four golden sponge layers soaked with vanilla syrup and silky buttercream.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-wine-dark/10">
+            <span class="text-lg font-bold text-wine-dark">₦7,800</span>
+            <button onclick="addToCart('Vanilla Bean Layer Cake', 7800)" class="px-5 py-2 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
 
-          <div class="pt-3 border-t border-neutral-200 space-y-2">
-            <div class="flex justify-between text-xs font-semibold text-neutral-700">
-              <span>Total Amount</span>
-              <span id="cart-total-price" class="font-serif font-bold text-brandBurgundy text-sm">$0.00</span>
-            </div>
-            <button onclick="checkoutOrder()" class="figma-order-pill w-full py-2.5 rounded-full font-serif font-bold text-xs uppercase tracking-wider text-center">
-              PLACE ORDER NOW
+        <!-- Item 3 -->
+        <div class="bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white/40 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-white mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&auto=format&fit=crop&q=80" alt="Carrot & Spiced Walnut Cake" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-wine-dark">Carrot & Walnut Cake</h3>
+          <p class="text-xs text-wine-dark/70 mt-2 min-h-[36px]">Grated sweet carrots, roasted chopped walnuts, cinnamon, and ginger frosting.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-wine-dark/10">
+            <span class="text-lg font-bold text-wine-dark">₦9,000</span>
+            <button onclick="addToCart('Carrot & Walnut Cake', 9000)" class="px-5 py-2 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white/40 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-white mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&auto=format&fit=crop&q=80" alt="Strawberry Shortcake" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-wine-dark">Strawberry Shortcake</h3>
+          <p class="text-xs text-wine-dark/70 mt-2 min-h-[36px]">Fresh macerated local strawberries with light-as-air whipped chantilly cream.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-wine-dark/10">
+            <span class="text-lg font-bold text-wine-dark">₦8,900</span>
+            <button onclick="addToCart('Strawberry Shortcake', 8900)" class="px-5 py-2 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="bg-white/40 hover:bg-white/60 backdrop-blur-sm rounded-3xl p-6 border border-white/40 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-white mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&auto=format&fit=crop&q=80" alt="Triple Chocolate Truffle" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-wine-dark">Triple Chocolate Truffle</h3>
+          <p class="text-xs text-wine-dark/70 mt-2 min-h-[36px]">Dark Belgian chocolate ganache layered with moist chocolate sponge.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-wine-dark/10">
+            <span class="text-lg font-bold text-wine-dark">₦9,500</span>
+            <button onclick="addToCart('Triple Chocolate Truffle', 9500)" class="px-5 py-2 rounded-full bg-wine-dark text-blush-pink text-xs font-bold uppercase tracking-wider hover:bg-wine-deep transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ice Cream Grid (Hidden by default, shown on toggle) -->
+      <div id="grid-icecream" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-stone-100">
+        <!-- Ice 1 -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-3xl p-6 border border-white/15 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-stone-200 mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&auto=format&fit=crop&q=80" alt="Vanilla Bean Ice Cream" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-stone-100">Vanilla Bean Custard</h3>
+          <p class="text-xs text-stone-200/80 mt-2 min-h-[36px]">Real specked vanilla pod infusion in pasture-raised whole milk custard.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-white/15">
+            <span class="text-lg font-bold text-stone-100">₦3,500 / Tub</span>
+            <button onclick="addToCart('Vanilla Bean Custard', 3500)" class="px-5 py-2 rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Ice 2 -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-3xl p-6 border border-white/15 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-stone-200 mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&auto=format&fit=crop&q=80" alt="Chocolate Fudge Brownie" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-stone-100">Chocolate Fudge Brownie</h3>
+          <p class="text-xs text-stone-200/80 mt-2 min-h-[36px]">Dutch cocoa churned with gooey chewy brownie fudge ripples.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-white/15">
+            <span class="text-lg font-bold text-stone-100">₦4,200 / Tub</span>
+            <button onclick="addToCart('Chocolate Fudge Brownie', 4200)" class="px-5 py-2 rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Ice 3 -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-3xl p-6 border border-white/15 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-stone-200 mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?w=400&auto=format&fit=crop&q=80" alt="Strawberry Bliss" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-stone-100">Strawberry Bliss</h3>
+          <p class="text-xs text-stone-200/80 mt-2 min-h-[36px]">Fresh crushed organic strawberries with a splash of sweet lemon.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-white/15">
+            <span class="text-lg font-bold text-stone-100">₦3,800 / Tub</span>
+            <button onclick="addToCart('Strawberry Bliss', 3800)" class="px-5 py-2 rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Ice 4 -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-3xl p-6 border border-white/15 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-stone-200 mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1579954115563-e72bf1381629?w=400&auto=format&fit=crop&q=80" alt="Mint Chocolate Chip" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-stone-100">Mint Chocolate Crunch</h3>
+          <p class="text-xs text-stone-200/80 mt-2 min-h-[36px]">Garden fresh mint leaf extract speckled with 70% dark chocolate shards.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-white/15">
+            <span class="text-lg font-bold text-stone-100">₦4,000 / Tub</span>
+            <button onclick="addToCart('Mint Chocolate Crunch', 4000)" class="px-5 py-2 rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+              Add +
+            </button>
+          </div>
+        </div>
+
+        <!-- Ice 5 -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-3xl p-6 border border-white/15 shadow-sm hover:shadow-xl transition-all flex flex-col items-center text-center group">
+          <div class="w-36 h-36 rounded-full overflow-hidden shadow-lg border-4 border-stone-200 mb-5 transform group-hover:scale-105 transition-transform">
+            <img src="https://images.unsplash.com/photo-1549395156-e0c1fe6fc7a5?w=400&auto=format&fit=crop&q=80" alt="Salted Caramel" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-serif-vintage font-bold text-xl text-stone-100">Salted Caramel Sundae</h3>
+          <p class="text-xs text-stone-200/80 mt-2 min-h-[36px]">Slow-cooked brown butter caramel sprinkled with flaky sea salt crystals.</p>
+          <div class="w-full flex items-center justify-between mt-6 pt-4 border-t border-white/15">
+            <span class="text-lg font-bold text-stone-100">₦4,200 / Tub</span>
+            <button onclick="addToCart('Salted Caramel Sundae', 4200)" class="px-5 py-2 rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+              Add +
             </button>
           </div>
         </div>
@@ -1264,337 +329,376 @@
     </div>
   </section>
 
-  <!-- Live Map Modal Dialog for Locations -->
-  <div id="map-modal-dialog" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 pointer-events-none opacity-0 transition-opacity duration-200">
-    <div class="bg-brandCream rounded-3xl max-w-sm w-full p-5 shadow-2xl border border-white relative scale-95 transition-transform duration-200" id="map-dialog-box">
-      <button onclick="closeLiveMapModal()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-neutral-200 text-neutral-600 flex items-center justify-center text-xs hover:bg-neutral-300">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="flex items-center gap-2 mb-2">
-        <i class="fa-solid fa-location-dot text-brandOlive text-base"></i>
-        <h3 id="modal-map-name" class="font-serif font-bold text-base text-brandBurgundy">Store Location</h3>
+  <!-- ================= LOCATIONS SECTION (EXACT OLIVE THEME) ================= -->
+  <section id="locations" class="py-24 bg-olive-green text-stone-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="text-center max-w-xl mx-auto mb-16">
+        <h2 class="text-3xl sm:text-5xl font-serif-vintage font-bold tracking-tight mb-3">Our Locations</h2>
+        <p class="text-stone-300 text-sm sm:text-base">Visit our physical bakery parlors across the city for fresh bakes and scoops.</p>
       </div>
-      <p id="modal-map-addr" class="text-xs text-neutral-600 mb-3">Address</p>
 
-      <!-- Stylized Map Canvas Visual -->
-      <div class="w-full h-36 rounded-2xl bg-[#e5dfd5] border border-neutral-300 relative overflow-hidden flex items-center justify-center mb-3 shadow-inner">
-        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#5c6251_1px,transparent_1px)] [background-size:12px_12px]"></div>
-        <div class="w-3/4 h-2 bg-amber-600/30 rotate-12 -top-1 absolute"></div>
-        <div class="w-full h-2 bg-emerald-600/30 -rotate-6 bottom-4 absolute"></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        <div class="relative flex flex-col items-center animate-bounce">
-          <i class="fa-solid fa-location-dot text-brandBurgundy text-3xl drop-shadow"></i>
-          <span class="w-3 h-1 bg-black/30 rounded-full blur-[1px]"></span>
+        <!-- Location 1 -->
+        <div class="bg-olive-card/80 border border-stone-400/20 rounded-3xl p-6 hover:bg-olive-card transition-all flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="h-48 rounded-2xl overflow-hidden mb-6">
+              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop&q=80" alt="Ikeja Flagship" class="w-full h-full object-cover">
+            </div>
+            <div class="flex items-center space-x-2 text-stone-300 text-xs uppercase tracking-widest font-semibold mb-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rose-300"></i>
+              <span>Main Flagship</span>
+            </div>
+            <h3 class="text-xl font-serif-vintage font-bold text-stone-100 mb-2">Ikeja Aviation Way</h3>
+            <p class="text-xs text-stone-300 leading-relaxed mb-4">Plot 12, Aviation Road, GRA Ikeja. Open Daily: 7:30 AM – 9:00 PM.</p>
+          </div>
+          <button onclick="openMapModal('Ikeja Flagship', 'Plot 12 Aviation Road, GRA Ikeja', '+234 814 857 1810')" class="w-full py-3 rounded-full bg-stone-900/60 hover:bg-stone-900 text-xs font-bold uppercase tracking-widest text-stone-200 border border-stone-500/40 transition-all flex items-center justify-center space-x-2">
+            <span>View On Map</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- Location 2 -->
+        <div class="bg-olive-card/80 border border-stone-400/20 rounded-3xl p-6 hover:bg-olive-card transition-all flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="h-48 rounded-2xl overflow-hidden mb-6">
+              <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=80" alt="King Promenade Mall" class="w-full h-full object-cover">
+            </div>
+            <div class="flex items-center space-x-2 text-stone-300 text-xs uppercase tracking-widest font-semibold mb-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rose-300"></i>
+              <span>Mall Parlor</span>
+            </div>
+            <h3 class="text-xl font-serif-vintage font-bold text-stone-100 mb-2">King Promenade Mall</h3>
+            <p class="text-xs text-stone-300 leading-relaxed mb-4">Ground Floor, Phase II, Retail Wing. Open Daily: 9:00 AM – 10:00 PM.</p>
+          </div>
+          <button onclick="openMapModal('King Promenade Mall', 'Ground Floor, Phase II, Mall Court', '+234 814 857 1811')" class="w-full py-3 rounded-full bg-stone-900/60 hover:bg-stone-900 text-xs font-bold uppercase tracking-widest text-stone-200 border border-stone-500/40 transition-all flex items-center justify-center space-x-2">
+            <span>View On Map</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- Location 3 -->
+        <div class="bg-olive-card/80 border border-stone-400/20 rounded-3xl p-6 hover:bg-olive-card transition-all flex flex-col justify-between shadow-lg">
+          <div>
+            <div class="h-48 rounded-2xl overflow-hidden mb-6">
+              <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80" alt="Victoria Island Kiosk" class="w-full h-full object-cover">
+            </div>
+            <div class="flex items-center space-x-2 text-stone-300 text-xs uppercase tracking-widest font-semibold mb-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-rose-300"></i>
+              <span>Ice Cream Kiosk</span>
+            </div>
+            <h3 class="text-xl font-serif-vintage font-bold text-stone-100 mb-2">Victoria Island Kiosk</h3>
+            <p class="text-xs text-stone-300 leading-relaxed mb-4">Corner of Grove Road, Behind Shoprite. Open Daily: 10:00 AM – 11:00 PM.</p>
+          </div>
+          <button onclick="openMapModal('Victoria Island Kiosk', 'Corner of Grove Road, VI', '+234 814 857 1812')" class="w-full py-3 rounded-full bg-stone-900/60 hover:bg-stone-900 text-xs font-bold uppercase tracking-widest text-stone-200 border border-stone-500/40 transition-all flex items-center justify-center space-x-2">
+            <span>View On Map</span>
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT OUR STORY ================= -->
+  <section id="about" class="py-24 bg-blush-pink">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <div class="lg:col-span-6 rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+        <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1000&auto=format&fit=crop&q=80" alt="Bakery Heritage Kitchen" class="w-full h-full object-cover">
+      </div>
+
+      <div class="lg:col-span-6 space-y-6">
+        <span class="text-xs font-bold tracking-widest text-wine-dark/70 uppercase">Our Heritage & Craft</span>
+        <h2 class="text-3xl sm:text-5xl font-serif-vintage font-bold text-wine-dark">Three Generations of Slow Baking.</h2>
+        <div class="space-y-4 text-wine-dark/85 text-sm sm:text-base leading-relaxed">
+          <p>
+            It began with our grandfather's wood-fired stone oven. While early morning fog settled over the streets, our family mixed flour, unrefined sugars, and fresh churned pasture butter by hand.
+          </p>
+          <p>
+            DeeDee's Bakery remains rooted in those timeless techniques: no artificial stabilizers, slow-fermentation doughs, and cakes baked to order each morning. In 2024, we extended our artisan devotion to slow-churned ice cream custards—giving our patrons a sweet balance of warmth and chill under one roof.
+          </p>
+        </div>
+        <div class="pt-4 flex items-center space-x-6">
+          <div>
+            <span class="block text-3xl font-serif-vintage font-bold text-wine-dark">100%</span>
+            <span class="text-xs text-wine-dark/70 uppercase font-semibold">Natural Ingredients</span>
+          </div>
+          <div class="h-10 w-px bg-wine-dark/20"></div>
+          <div>
+            <span class="block text-3xl font-serif-vintage font-bold text-wine-dark">Daily</span>
+            <span class="text-xs text-wine-dark/70 uppercase font-semibold">Oven Fresh Batches</span>
+          </div>
         </div>
       </div>
 
-      <div class="text-[11px] text-neutral-600 space-y-1 mb-4">
-        <div class="flex justify-between">
-          <span class="font-semibold">Hours:</span>
-          <span id="modal-map-hrs" class="text-neutral-800">8:00 AM - 9:00 PM</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="font-semibold">Phone:</span>
-          <span id="modal-map-tel" class="text-neutral-800">+234 814 857 1810</span>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT & ORDER INQUIRY ================= -->
+  <section id="contact" class="py-20 bg-wine-dark text-blush-pink">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+      
+      <div class="lg:col-span-5 space-y-6">
+        <h2 class="text-3xl sm:text-4xl font-serif-vintage font-bold text-white">Get in Touch with Us</h2>
+        <p class="text-sm text-blush-pink/80 leading-relaxed">Have a bespoke wedding cake inquiry, event catering question, or wholesale order? Reach out directly.</p>
+        
+        <div class="space-y-4 pt-4">
+          <a href="tel:+2348148571810" class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
+            <i data-lucide="phone" class="w-5 h-5 text-rose-300"></i>
+            <div>
+              <p class="text-xs text-blush-pink/60 uppercase">Phone & Hotline</p>
+              <p class="font-bold text-white">+234 814 857 1810</p>
+            </div>
+          </a>
+
+          <a href="mailto:deedeesbakery@mail.com" class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-colors">
+            <i data-lucide="mail" class="w-5 h-5 text-rose-300"></i>
+            <div>
+              <p class="text-xs text-blush-pink/60 uppercase">Email Orders</p>
+              <p class="font-bold text-white">deedeesbakery@mail.com</p>
+            </div>
+          </a>
+
+          <div class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5">
+            <i data-lucide="instagram" class="w-5 h-5 text-rose-300"></i>
+            <div>
+              <p class="text-xs text-blush-pink/60 uppercase">Instagram</p>
+              <p class="font-bold text-white">@deedeehub</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4 p-4 rounded-2xl bg-white/5">
+            <i data-lucide="message-circle" class="w-5 h-5 text-rose-300"></i>
+            <div>
+              <p class="text-xs text-blush-pink/60 uppercase">WhatsApp Concierge</p>
+              <p class="font-bold text-white">@01deedee</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <button onclick="showNotification('Store directions sent to maps!'); closeLiveMapModal();" class="w-full py-2.5 rounded-full bg-brandOlive hover:bg-brandOliveDark text-white font-serif text-xs font-bold tracking-wider transition uppercase shadow">
-        Get Driving Directions
-      </button>
+      <!-- Quick Message Form -->
+      <div class="lg:col-span-7 bg-white/5 p-8 sm:p-10 rounded-3xl border border-white/10">
+        <h3 class="text-xl font-serif-vintage font-bold text-white mb-6">Send A Custom Cake Inquiry</h3>
+        <form onsubmit="handleInquiry(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs uppercase font-semibold text-blush-pink/70 mb-2">Your Name</label>
+              <input type="text" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs uppercase font-semibold text-blush-pink/70 mb-2">Phone Number</label>
+              <input type="tel" required placeholder="+234 ..." class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 text-sm">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase font-semibold text-blush-pink/70 mb-2">Event Type / Flavor Details</label>
+            <textarea rows="4" required placeholder="Tell us your desired flavors, size, or event date..." class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 text-sm"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 rounded-full bg-blush-pink text-wine-dark font-bold text-xs uppercase tracking-widest hover:bg-white transition-all shadow-lg">
+            Send Inquiry
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DESKTOP FOOTER ================= -->
+  <footer class="bg-wine-deep text-blush-pink/70 py-12 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl">🧁</span>
+        <span class="font-serif-vintage font-bold text-white text-lg tracking-wider">DEEDEE'S BAKERY</span>
+      </div>
+      <p class="text-xs">© 2026 DeeDee's Bakery & Ice Cream Parlor Ltd. All rights reserved.</p>
+      <div class="flex space-x-6 text-xs">
+        <a href="#hero" class="hover:text-white">Privacy</a>
+        <a href="#hero" class="hover:text-white">Terms</a>
+        <a href="#menu" class="hover:text-white">Menu</a>
+        <a href="#locations" class="hover:text-white">Locations</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= SLIDE-OUT CART DRAWER ================= -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-wine-dark text-blush-pink p-6 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex items-center justify-between pb-6 border-b border-white/10">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="shopping-bag" class="w-5 h-5 text-rose-300"></i>
+            <h3 class="font-serif-vintage font-bold text-xl text-white">Your Order</h3>
+          </div>
+          <button onclick="toggleCartDrawer()" class="p-1 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+
+        <div id="cart-items" class="py-6 space-y-4 max-h-[60vh] overflow-y-auto">
+          <p class="text-sm opacity-60 text-center py-10" id="empty-cart-msg">Your cart is currently empty. Add treats from the menu!</p>
+        </div>
+      </div>
+
+      <div class="pt-6 border-t border-white/10 space-y-4">
+        <div class="flex justify-between items-center text-sm">
+          <span>Subtotal:</span>
+          <span class="text-xl font-bold text-white" id="cart-total">₦0</span>
+        </div>
+        <button onclick="checkoutCart()" class="w-full py-4 rounded-full bg-blush-pink text-wine-dark font-bold text-xs uppercase tracking-widest hover:bg-white transition-all shadow-lg">
+          Proceed to Checkout
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Toast alert box -->
-  <div id="sim-toast" class="fixed top-16 inset-x-4 max-w-xs mx-auto z-50 bg-brandBurgundy text-white text-xs px-4 py-2.5 rounded-2xl shadow-2xl border border-white/20 flex items-center gap-2.5 pointer-events-none opacity-0 -translate-y-2 transition-all duration-300">
-    <i class="fa-solid fa-circle-check text-brandPink"></i>
-    <span id="sim-toast-text">Message</span>
+  <!-- ================= MAP MODAL ================= -->
+  <div id="map-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-olive-green text-stone-100 max-w-md w-full rounded-3xl p-6 border border-white/20 shadow-2xl relative">
+      <button onclick="closeMapModal()" class="absolute top-4 right-4 p-1 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+      <h3 class="font-serif-vintage font-bold text-2xl mb-2" id="modal-title">Branch Name</h3>
+      <p class="text-xs text-stone-300 mb-6" id="modal-address">Branch Address</p>
+      
+      <div class="w-full h-48 bg-stone-900/60 rounded-2xl flex flex-col items-center justify-center border border-white/10 p-4 text-center">
+        <i data-lucide="map" class="w-8 h-8 text-rose-300 mb-2"></i>
+        <p class="text-xs text-stone-300">GPS Directions & Live Branch Coordinates</p>
+        <span class="text-[10px] text-stone-400 mt-1 font-mono">Lat: 6.5244° N, Lon: 3.3792° E</span>
+      </div>
+
+      <div class="mt-6 flex space-x-3">
+        <a id="modal-call-btn" href="tel:" class="flex-1 py-3 text-center rounded-full bg-stone-900 text-stone-100 text-xs font-bold uppercase tracking-wider hover:bg-black transition-all">
+          Call Branch
+        </a>
+        <button onclick="closeMapModal()" class="flex-1 py-3 rounded-full bg-white text-wine-dark text-xs font-bold uppercase tracking-wider hover:bg-stone-200 transition-all">
+          Done
+        </button>
+      </div>
+    </div>
   </div>
 
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // Application State
-    const app = {
-      viewMode: 'canvas', // 'canvas' or 'simulator'
-      currentProtoScreen: 'home',
-      currentMenuTab: 'cake', // 'cake' or 'icecream'
-      cart: [],
-    };
+    lucide.createIcons();
 
-    // Toggle between side-by-side canvas and simulator
-    function setViewMode(mode) {
-      app.viewMode = mode;
-      const canvasView = document.getElementById('figma-canvas-view');
-      const simView = document.getElementById('simulator-view');
-      const btnCanvas = document.getElementById('view-btn-canvas');
-      const btnSim = document.getElementById('view-btn-simulator');
+    let cart = [];
 
-      if (mode === 'canvas') {
-        canvasView.classList.remove('hidden');
-        simView.classList.add('hidden');
-        btnCanvas.className = "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#3B3B3B] shadow transition";
-        btnSim.className = "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white transition";
+    // Mobile nav toggle
+    function toggleMobileNav() {
+      const nav = document.getElementById('mobile-nav');
+      nav.classList.toggle('hidden');
+    }
+
+    // Figma Dual Toggle (Cakes vs. Ice Cream)
+    function setMenuCategory(category) {
+      const btnCake = document.getElementById('toggle-cake');
+      const btnIce = document.getElementById('toggle-icecream');
+      const gridCake = document.getElementById('grid-cake');
+      const gridIce = document.getElementById('grid-icecream');
+      const menuSection = document.getElementById('menu');
+      const heading = document.getElementById('menu-heading');
+      const subheading = document.getElementById('menu-subheading');
+
+      if (category === 'cake') {
+        gridCake.classList.remove('hidden');
+        gridIce.classList.add('hidden');
+        btnCake.className = 'px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 bg-white text-wine-dark shadow-md';
+        btnIce.className = 'px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 text-stone-700 hover:text-stone-900';
+        
+        menuSection.className = 'py-20 bg-blush-pink text-wine-dark transition-colors duration-500';
+        heading.className = 'text-3xl sm:text-5xl font-serif-vintage font-bold tracking-tight mb-4 text-wine-dark';
+        subheading.className = 'text-sm sm:text-base text-wine-dark/80';
       } else {
-        canvasView.classList.add('hidden');
-        simView.classList.remove('hidden');
-        simView.classList.add('flex');
-        btnSim.className = "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#3B3B3B] shadow transition";
-        btnCanvas.className = "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-400 hover:text-white transition";
+        gridCake.classList.add('hidden');
+        gridIce.classList.remove('hidden');
+        btnIce.className = 'px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 bg-white text-olive-green shadow-md';
+        btnCake.className = 'px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 text-stone-200 hover:text-white';
+
+        menuSection.className = 'py-20 bg-olive-green text-stone-100 transition-colors duration-500';
+        heading.className = 'text-3xl sm:text-5xl font-serif-vintage font-bold tracking-tight mb-4 text-stone-100';
+        subheading.className = 'text-sm sm:text-base text-stone-300';
       }
     }
 
-    // Prototype Screen Jumper
-    function jumpPrototype(screenKey, subCategory = null) {
-      // If in canvas view, switch to simulator to preview interactively
-      if (app.viewMode === 'canvas') {
-        setViewMode('simulator');
-      }
-
-      app.currentProtoScreen = screenKey;
-      closeFloatingMenu();
-
-      // Hide all simulator sections
-      const sections = ['home', 'menu', 'contact', 'about', 'locations'];
-      sections.forEach(s => {
-        const el = document.getElementById(`proto-screen-${s}`);
-        if (el) {
-          el.classList.remove('proto-active');
-          el.classList.add('proto-hidden');
-        }
-      });
-
-      // Show targeted section
-      const target = document.getElementById(`proto-screen-${screenKey}`);
-      if (target) {
-        target.classList.remove('proto-hidden');
-        target.classList.add('proto-active');
-      }
-
-      // Scroll top
-      document.getElementById('sim-scroll-body').scrollTop = 0;
-
-      // Color Theme synchronization (Blush Pink vs Olive Sage)
-      if (screenKey === 'locations' || (screenKey === 'menu' && subCategory === 'icecream')) {
-        setSimTheme('olive');
-      } else {
-        setSimTheme('pink');
-      }
-
-      // If jumping to menu with specific category
-      if (screenKey === 'menu' && subCategory) {
-        setSimMenuCategory(subCategory);
-      }
+    // Cart Drawer Logic
+    function toggleCartDrawer() {
+      const drawer = document.getElementById('cart-drawer');
+      drawer.classList.toggle('translate-x-full');
     }
 
-    // Set simulator shell theme
-    function setSimTheme(theme) {
-      const shell = document.getElementById('sim-shell');
-      const brandTitle = document.getElementById('sim-brand-title');
-      const brandIcon = document.getElementById('sim-brand-icon');
-      const cartIcon = document.getElementById('sim-cart-icon');
-      const bars = [document.getElementById('h-bar-1'), document.getElementById('h-bar-2'), document.getElementById('h-bar-3')];
-      const bottomBar = document.getElementById('sim-bottom-bar');
-
-      if (theme === 'olive') {
-        shell.style.backgroundColor = '#5C6251';
-        brandTitle.className = 'font-cormorant font-bold text-base tracking-widest text-white transition';
-        brandIcon.className = 'fa-solid fa-cake-candles text-white text-xs';
-        cartIcon.className = 'fa-solid fa-bag-shopping text-base text-white';
-        bars.forEach(b => b.className = 'w-5 h-[2px] bg-white rounded-full transition-all');
-        bottomBar.className = 'absolute bottom-0 inset-x-0 bg-black/40 backdrop-blur-md border-t border-white/20 px-3 py-2 flex justify-around items-center z-20 text-white';
-      } else {
-        shell.style.backgroundColor = '#F4C2BE';
-        brandTitle.className = 'font-cormorant font-bold text-base tracking-widest text-brandBurgundy transition';
-        brandIcon.className = 'fa-solid fa-cake-candles text-brandBurgundy text-xs';
-        cartIcon.className = 'fa-solid fa-bag-shopping text-base text-brandBurgundy';
-        bars.forEach(b => b.className = 'w-5 h-[2px] bg-brandBurgundy rounded-full transition-all');
-        bottomBar.className = 'absolute bottom-0 inset-x-0 bg-white/75 backdrop-blur-md border-t border-white/40 px-3 py-2 flex justify-around items-center z-20 text-brandBurgundy';
-      }
-    }
-
-    // Toggle menu tab inside simulator
-    function toggleMenuTab() {
-      const next = app.currentMenuTab === 'cake' ? 'icecream' : 'cake';
-      setSimMenuCategory(next);
-    }
-
-    function setSimMenuCategory(cat) {
-      app.currentMenuTab = cat;
-      const toggle = document.getElementById('proto-menu-toggle');
-      const circle = document.getElementById('proto-toggle-circle');
-      const label = document.getElementById('proto-toggle-label');
-      const cakeList = document.getElementById('proto-cake-list');
-      const icecreamList = document.getElementById('proto-icecream-list');
-
-      if (cat === 'cake') {
-        cakeList.classList.remove('hidden');
-        icecreamList.classList.add('hidden');
-        toggle.className = 'bg-brandPinkSoft border border-white/60 rounded-full p-1 w-48 flex items-center justify-between shadow-inner cursor-pointer';
-        circle.style.transform = 'translateX(0px)';
-        label.innerText = 'Cake';
-        label.className = 'font-serif font-bold text-xs text-brandBurgundy pr-5 transition-colors';
-        setSimTheme('pink');
-      } else {
-        cakeList.classList.add('hidden');
-        icecreamList.classList.remove('hidden');
-        toggle.className = 'bg-[#4A5040] border border-white/30 rounded-full p-1 w-48 flex items-center justify-between shadow-inner cursor-pointer';
-        circle.style.transform = 'translateX(136px)';
-        label.innerText = 'Ice cream';
-        label.className = 'font-serif font-bold text-xs text-white pl-5 transition-colors';
-        setSimTheme('olive');
-      }
-    }
-
-    // Floating Terracotta menu card toggle
-    let isMenuOpen = false;
-    function toggleFloatingMenu() {
-      isMenuOpen = !isMenuOpen;
-      const card = document.getElementById('sim-floating-card');
-      if (isMenuOpen) {
-        card.classList.remove('pointer-events-none', 'opacity-0', 'scale-95');
-        card.classList.add('opacity-100', 'scale-100');
-      } else {
-        closeFloatingMenu();
-      }
-    }
-
-    function closeFloatingMenu() {
-      isMenuOpen = false;
-      const card = document.getElementById('sim-floating-card');
-      if (card) {
-        card.classList.remove('opacity-100', 'scale-100');
-        card.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-      }
-    }
-
-    // Cart management
-    function addItemToCart(name, price) {
-      const existing = app.cart.find(i => i.name === name);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        app.cart.push({ name, price, qty: 1 });
-      }
+    function addToCart(name, price) {
+      cart.push({ name, price });
       updateCartUI();
-      showNotification(`Added 1x ${name} to order!`);
+      // Open drawer automatically on add
+      document.getElementById('cart-drawer').classList.remove('translate-x-full');
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
     }
 
     function updateCartUI() {
-      const badge = document.getElementById('sim-cart-badge');
-      const totalCount = app.cart.reduce((sum, item) => sum + item.qty, 0);
-      const totalAmount = app.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const counter = document.getElementById('cart-counter');
+      const itemsContainer = document.getElementById('cart-items');
+      const totalEl = document.getElementById('cart-total');
 
-      if (totalCount > 0) {
-        badge.innerText = totalCount;
-        badge.classList.remove('scale-0');
-        badge.classList.add('scale-100');
+      if (cart.length > 0) {
+        counter.textContent = cart.length;
+        counter.classList.remove('hidden');
+        
+        itemsContainer.innerHTML = cart.map((item, idx) => `
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-white/10 border border-white/10">
+            <div>
+              <p class="font-bold text-sm text-white">${item.name}</p>
+              <p class="text-xs text-rose-300">₦${item.price.toLocaleString()}</p>
+            </div>
+            <button onclick="removeFromCart(${idx})" class="p-1.5 hover:bg-white/10 rounded-full text-blush-pink">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `).join('');
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        totalEl.textContent = '₦' + total.toLocaleString();
       } else {
-        badge.classList.remove('scale-100');
-        badge.classList.add('scale-0');
+        counter.classList.add('hidden');
+        itemsContainer.innerHTML = '<p class="text-sm opacity-60 text-center py-10" id="empty-cart-msg">Your cart is currently empty. Add treats from the menu!</p>';
+        totalEl.textContent = '₦0';
       }
+      lucide.createIcons();
+    }
 
-      document.getElementById('cart-total-price').innerText = `$${totalAmount.toFixed(2)}`;
-
-      const container = document.getElementById('cart-items-container');
-      if (app.cart.length === 0) {
-        container.innerHTML = `<p class="text-xs text-neutral-400 text-center py-6">Your bag is empty.</p>`;
+    function checkoutCart() {
+      if (cart.length === 0) {
+        alert("Please add items to your cart before checking out.");
         return;
       }
-
-      container.innerHTML = app.cart.map((item, idx) => `
-        <div class="flex items-center justify-between text-xs bg-white p-2.5 rounded-xl border border-neutral-100 shadow-2xs">
-          <div>
-            <p class="font-serif font-bold text-brandBurgundy">${item.name}</p>
-            <p class="text-[10px] text-neutral-500">$${item.price.toFixed(2)}</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="changeQty(${idx}, -1)" class="w-5 h-5 rounded-full bg-neutral-100 font-bold text-neutral-600 flex items-center justify-center">-</button>
-            <span class="font-bold text-neutral-800">${item.qty}</span>
-            <button onclick="changeQty(${idx}, 1)" class="w-5 h-5 rounded-full bg-brandPink text-brandBurgundy font-bold flex items-center justify-center">+</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function changeQty(idx, delta) {
-      if (app.cart[idx]) {
-        app.cart[idx].qty += delta;
-        if (app.cart[idx].qty <= 0) {
-          app.cart.splice(idx, 1);
-        }
-      }
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      alert(`Thank you for choosing DeeDee's Bakery!\n\nYour Order Total: ₦${total.toLocaleString()}\n\nOur team has received your order request.`);
+      cart = [];
       updateCartUI();
+      toggleCartDrawer();
     }
 
-    function openCartModal() {
-      const drawer = document.getElementById('cart-drawer');
-      const card = document.getElementById('cart-drawer-card');
-      drawer.classList.remove('pointer-events-none', 'opacity-0');
-      card.classList.remove('translate-y-full');
-      updateCartUI();
+    // Map Modal logic
+    function openMapModal(title, address, phone) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-address').textContent = address;
+      document.getElementById('modal-call-btn').href = 'tel:' + phone.replace(/\s+/g, '');
+      document.getElementById('map-modal').classList.remove('hidden');
     }
 
-    function closeCartModal() {
-      const drawer = document.getElementById('cart-drawer');
-      const card = document.getElementById('cart-drawer-card');
-      card.classList.add('translate-y-full');
-      drawer.classList.add('opacity-0');
-      setTimeout(() => drawer.classList.add('pointer-events-none'), 300);
+    function closeMapModal() {
+      document.getElementById('map-modal').classList.add('hidden');
     }
 
-    function checkoutOrder() {
-      if (app.cart.length === 0) {
-        showNotification("Bag is currently empty.");
-        return;
-      }
-      closeCartModal();
-      showNotification("✨ Order placed! Freshly packing your items.");
-      app.cart = [];
-      updateCartUI();
+    function handleInquiry(e) {
+      e.preventDefault();
+      alert("Thank you! Your custom cake inquiry has been sent to DeeDee's Bakery. We will contact you via WhatsApp / phone shortly.");
+      e.target.reset();
     }
-
-    // Map Modal Dialog
-    function openLiveMapModal(name, addr, hrs, phone) {
-      document.getElementById('modal-map-name').innerText = name;
-      document.getElementById('modal-map-addr').innerText = addr;
-      document.getElementById('modal-map-hrs').innerText = hrs;
-      document.getElementById('modal-map-tel').innerText = phone;
-
-      const modal = document.getElementById('map-modal-dialog');
-      const box = document.getElementById('map-dialog-box');
-      modal.classList.remove('pointer-events-none', 'opacity-0');
-      box.classList.remove('scale-95');
-      box.classList.add('scale-100');
-    }
-
-    function closeLiveMapModal() {
-      const modal = document.getElementById('map-modal-dialog');
-      const box = document.getElementById('map-dialog-box');
-      box.classList.remove('scale-100');
-      box.classList.add('scale-95');
-      modal.classList.add('opacity-0');
-      setTimeout(() => modal.classList.add('pointer-events-none'), 200);
-    }
-
-    // Notification Toast
-    let toastTimer;
-    function showNotification(msg) {
-      const toast = document.getElementById('sim-toast');
-      const text = document.getElementById('sim-toast-text');
-      text.innerText = msg;
-      toast.classList.remove('opacity-0', '-translate-y-2');
-      toast.classList.add('opacity-100', 'translate-y-0');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', '-translate-y-2');
-      }, 2500);
-    }
-
-    // Initialize default UI
-    window.addEventListener('DOMContentLoaded', () => {
-      updateCartUI();
-    });
   </script>
 </body>
 </html>
